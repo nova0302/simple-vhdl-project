@@ -2,7 +2,7 @@
 QUARTUS_ROOT?= C:/intelFPGA_lite/17.0/quartus
 DEVICE_FAMILY = cycloneive
 
-PROJECT = led_test
+PROJECT = fixed_test
 TB = ./../../../rtl/vhdl/$(PROJECT)_tb.vhd
 TB_MODULE = $(PROJECT)_tb
 
