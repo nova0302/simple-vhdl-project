@@ -8,11 +8,15 @@ VCOM_OPTIONS = -2008
 VSIM_OPTIONS = -c -novopt -do "run -all; quit"
 GVSIM_OPTIONS = -novopt -do "add wave *; radix -hex; run -all; quit"
 
-VDIR =./../../../rtl/vhdl
-VSRCS =$(wildcard $(VDIR)/*.vhd)
-
 DUT  = led_test
 TB   = $(DUT)_tb
+
+VDIR =./../../../rtl/vhdl
+_SRCS=edge_detect.vhd $(DUT).vhd  $(TB).vhd 
+
+SRCS=$(addprefix $(VDIR)/,$(_SRCS))
+#SRCS =$(wildcard $(VDIR)/*.vhd)
+
 V=@
 all: lib com sim
 sim:
@@ -26,7 +30,7 @@ gsim:
 com:
 	$(V)echo " "
 	$(V)echo " -------   Compiling verilog source files !!! ------------"
-	$(VCOM) $(VCOM_OPTIONS) -work $(WORK) $(VSRCS)
+	$(VCOM) $(VCOM_OPTIONS) -work $(WORK) $(SRCS)
 	$(V)echo " "
 	$(V)echo " -------   Compiling testbench !!! ------------"
 	$(VCOM) $(VCOM_OPTIONS) -work $(WORK) $(VDIR)/$(TB).vhd
@@ -34,9 +38,10 @@ com:
 
 lib:
 	$(V)echo " -------   Generate $(WORK) directory if it does not exist!!! ----------"
-	$(V)if [ -d $(WORK) ]; then vdel -lib $(WORK) -all && vlib $(WORK); fi
-	@if [ -d $(WORK) ]; then vdel -lib $(WORK) && vlib $(WORK); fi
+	@if [ -d $(WORK) ]; then rm -rf $(WORK) && vlib $(WORK); fi
 	@if [ ! -d $(WORK) ]; then vlib $(WORK); fi
 
 clean:
 	rm -rf $(WORK) transcript *.wlf
+test:
+	echo $(SRCS)
