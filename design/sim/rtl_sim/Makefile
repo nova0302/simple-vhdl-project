@@ -1,10 +1,12 @@
 VLIB =  vlib
 VCOM =  vcom
+VLOG =  vlog
 VSIM =  vsim
 
 WORK = work
 
 VCOM_OPTIONS = -2008
+VLOG_OPTIONS = -sv
 VSIM_OPTIONS = -c -novopt -do "run -all; quit"
 GVSIM_OPTIONS = -novopt -do "add wave *; radix -hex; run -all; quit"
 
@@ -30,10 +32,11 @@ gsim:
 com:
 	$(V)echo " "
 	$(V)echo " -------   Compiling verilog source files !!! ------------"
-	$(VCOM) $(VCOM_OPTIONS) -work $(WORK) $(SRCS)
-	$(V)echo " "
-	$(V)echo " -------   Compiling testbench !!! ------------"
-	$(VCOM) $(VCOM_OPTIONS) -work $(WORK) $(VDIR)/$(TB).vhd
+	$(VLOG) $(VLOG_OPTIONS) -f vlog.args
+#	$(VCOM) $(VCOM_OPTIONS) -work $(WORK) $(SRCS)
+#	$(V)echo " "
+#	$(V)echo " -------   Compiling testbench !!! ------------"
+#	$(VCOM) $(VCOM_OPTIONS) -work $(WORK) $(VDIR)/$(TB).vhd
 #	$(VLOG) $(Vcom_OPTIONS) -f vcom.args
 
 lib:
